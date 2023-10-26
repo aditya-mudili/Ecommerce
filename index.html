@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        #container {
+            text-align: center;
+            max-width: 80%;
+            margin: 0 auto;
+            /* border:1px solid red; */
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            display: flex; 
+            flex-wrap: wrap; 
+        }
+        li {
+            margin: 10px;
+            flex: 0 1 calc(25% - 20px); /* Adjust width for three items per row */
+            text-align: center;
+        }
+        img {
+            max-width: 80%;
+            height: 40%;
+            transition: opacity 0.3s;
+
+        }
+        
+        li:hover img {
+            transform: scale(1.4); /* Increase the size on hover without affecting other images */
+        }
+        strong {
+            display: block;
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        span.price {
+            font-size: 16px;
+            color: #e44d26;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1>Product List</h1>
+        <ul id="products"></ul>
+    </div>
+    <script>
+        const productList = document.getElementById("products");
+
+        fetch('https://dummyjson.com/products')
+        .then((response) => response.json())
+        .then(data => {
+            data.products.forEach(product => {
+                const li = document.createElement("li");
+                const img = document.createElement("img");
+                img.src = product.images[0];
+                img.alt = product.title;
+                const strong = document.createElement("strong");
+                strong.textContent = product.title;
+                const price = document.createElement("span");
+                price.textContent = `Price: $${product.price.toFixed(2)}`;
+
+                li.appendChild(img);
+                li.appendChild(strong);
+                li.appendChild(price);
+
+                productList.appendChild(li);
+            });
+        })
+        .catch(error => {
+            console.error("An error occurred while fetching data:", error);
+        });
+    </script>
+</body>
+</html>
